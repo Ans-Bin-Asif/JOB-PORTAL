@@ -1,0 +1,105 @@
+{% load static %}
+{% block body %}
+{% include 'navigation.html' %}
+<style>
+	marquee{
+		margin-top: 0.5%;
+		background: black;
+		color: #fff;
+	}
+	.g_border{
+		border:1px solid lightgray;
+		padding: 7px;
+		border-radius: 3px;
+	}
+</style>
+
+<script>
+	function checkpass() {
+		if(document.signup.pwd.value != document.signup.cpwd.value)
+		{
+			alert("Passwords doesn't match!!!");
+			document.signup.cpwd.focus();
+			return false;
+		}
+		return true;
+	}
+</script>
+<!--===================================Main Body=============================-->
+<marquee direction="right">
+	<h4>User Registeration</h4>
+</marquee>
+	<div class="container">
+			<form onsubmit="return checkpass();" name="signup" method="POST" class="mt-5" enctype="multipart/form-data">
+		    {% csrf_token %}
+				<div class="row">
+					<div class="form-group col-md-6">
+						<label for="fname"><strong>First Name</strong></label>
+						<input type="text" name="fname" placeholder="Enter firstname..." class="form-control">
+					</div>
+					<div class="form-group col-md-6">
+						<label for="lname"><strong>Last Name</strong></label>
+						<input type="text" name="lname" placeholder="Enter lastname..." class="form-control">
+					</div>
+				</div>
+				<div class="form-group mt-2">
+					<label for="contact"><strong>Contact #</strong></label>
+					<input type="text" name="contact" placeholder="Enter contact #..." class="form-control">
+				</div>
+				<div class="form-group mt-2">
+					<label for="email"><strong>Email</strong></label>
+					<input type="email" name="email" placeholder="Enter email..." class="form-control" required>
+				</div>
+				<div class="row">
+					<div class="form-group col-md-6 mt-2">
+						<label for="pwd"><strong>Password</strong></label>
+						<input type="password" name="pwd" placeholder="Enter password..." class="form-control" required>
+					</div>
+					<div class="form-group col-md-6 mt-2">
+						<label for="cpwd"><strong>Confirm Password</strong></label>
+						<input type="password" name="cpwd" placeholder="Enter confirm password..." class="form-control" required>
+					</div>
+				</div>
+				<div class="row">
+					<div class="form-group col-md-6 mt-2">
+						<label for="gender"><strong>Gender</strong></label><br>
+						<div class="g_border">
+							<input type="radio" name="gender" value="male" >Male
+							<input type="radio" name="gender" value="female" >Female
+						</div>
+					</div>
+					<div class="form-group col-md-6 mt-2">
+						<label for="image"><strong>Image</strong></label>
+						<input type="file" name="image" class="form-control" accept="image/*" required >
+					</div>
+				</div>
+				<div class="form-group">
+					<input type="submit" value="Register" class="btn btn-dark my-3">
+					<a href="{% url 'user_login' %}" style="float:right;" class="mt-4">Already have an account? Register</a>
+				</div>
+
+	        </form>
+	        
+	</div>
+{% include 'footer.html' %}
+	
+	{% ifequal error "no" %}
+		<script>
+   			alert("User Registered Successfully!!!");
+			window.location = ('{% url 'user_login' %}');
+		</script>
+	{% endifequal %}
+
+	{% ifequal error "yes" %}
+		<script>
+  			alert("Something went wrong. Try again!!!");
+		</script>
+	{% endifequal %}
+
+	{% ifequal error "same_user" %}
+		<script>
+  			alert("Email already exists. Try another!!!");
+		</script>
+	{% endifequal %}
+
+{% endblock %}
