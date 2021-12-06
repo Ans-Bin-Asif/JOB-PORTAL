@@ -1,2 +1,2 @@
 # JOB-PORTAL
-Job Portal Web Application (FYP)
+Job Portal Web Application Using Django Framework (FYP)
